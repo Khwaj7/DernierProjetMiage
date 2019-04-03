@@ -1,0 +1,9 @@
+{
+  "nom": "Drucker",
+  "prenom": "Michel",
+  "mail": "m@drucker.com",
+  "username": "mich",
+  "password": "pass",
+  "licence": 0,
+  "niveau": 10
+}
