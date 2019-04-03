@@ -8,22 +8,25 @@ import java.util.List;
 
 @Repository
 public class MembreDaoImpl implements MembreDao {
-    public static List<Membre>products=new ArrayList<>();
+    public static List<Membre> membres = new ArrayList<>();
+
     static {
-        products.add(new Membre("Jugnot", "Gérard", "jug@mail.com", "gege", "pass", 0, 0);
-    }
-    @Override
-    public List<MembreDao> findAll() {
-        return null;
+        membres.add(new Membre("Jugnot", "Gérard", "jug@mail.com", "gege", "pass", 0, 0));
     }
 
     @Override
-    public MembreDao findById(int id) {
-        return null;
+    public List<Membre> findAll() {
+        return membres;
     }
 
     @Override
-    public MembreDao save(MembreDao membreDao) {
-        return null;
+    public Membre findById(int id) {
+        return membres.get(0);
+    }
+
+    @Override
+    public Membre save(Membre memb) {
+        membres.add(memb);
+        return memb;
     }
 }
