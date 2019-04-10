@@ -12,9 +12,16 @@ public class Membre {
     private CertificatMedical certificatMedical;
 
     public static Membre getMembreById(int idMembre){
-        return lesMembres.get(idMembre);
+        return getLesMembres().get(idMembre);
     }
 
+    public static ArrayList<Membre> getLesMembres() {
+        return lesMembres;
+    }
+
+    public static void setLesMembres(ArrayList<Membre> lesMembres) {
+        Membre.lesMembres = lesMembres;
+    }
 
 
     public String getNom() {
