@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 @Repository
 public class MembreDaoImpl implements MembreDao {
     public static List<Membre> membres = new ArrayList<>();
@@ -30,3 +30,4 @@ public class MembreDaoImpl implements MembreDao {
         return memb;
     }
 }
+*/

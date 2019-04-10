@@ -1,4 +1,4 @@
-package fr.miage.toulouse.membersAdmin.model;
+package fr.miage.toulouse.shared.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ public class Membre {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private static ArrayList<Membre> lesMembres = new ArrayList<>();
+    private static ArrayList<Membre> lesMembres = new ArrayList<Membre>();
     private String nom, prenom, mail, username, password;
     private int licence;
     private double niveau;
@@ -132,3 +132,4 @@ public class Membre {
     public Membre() {
     }
 }
+

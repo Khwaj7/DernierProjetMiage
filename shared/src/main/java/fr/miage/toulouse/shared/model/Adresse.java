@@ -1,4 +1,4 @@
-package fr.miage.toulouse.membersAdmin.model;
+package fr.miage.toulouse.shared.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

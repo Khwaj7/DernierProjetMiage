@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import fr.miage.toulouse.membersAdmin.model.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class membersController {
@@ -14,12 +14,12 @@ public class membersController {
     private MembreDao membreDao;
 
     @RequestMapping(value="/membres", method = RequestMethod.GET)
-    public List<Membre> listeMembres(){
+    public Iterable<Membre> listeMembres(){
         return membreDao.findAll();
     }
 
     @RequestMapping(value = "/membre/{id}", method = RequestMethod.GET)
-    public Membre getMembre(@PathVariable int id){
+    public Optional<Membre> getMembre(@PathVariable int id){
         return membreDao.findById(id);
     }
 
