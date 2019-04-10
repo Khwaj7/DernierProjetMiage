@@ -1,14 +1,25 @@
 package fr.miage.toulouse.membersAdmin.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 
+@Entity
 public class Membre {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     private static ArrayList<Membre> lesMembres = new ArrayList<>();
     private String nom, prenom, mail, username, password;
-    private int licence, id;
+    private int licence;
     private double niveau;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Adresse adresse;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private CertificatMedical certificatMedical;
 
     public static Membre getMembreById(int idMembre){
