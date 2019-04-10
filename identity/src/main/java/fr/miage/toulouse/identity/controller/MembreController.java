@@ -11,12 +11,12 @@ public class MembreController {
     @Autowired
     private MembreRepository membreRepository;
 
-    @RequestMapping(value = "/Membres", method = RequestMethod.GET)
-    public String membres(){
-        return "plop";
+    @RequestMapping(value = "/membres", method = RequestMethod.GET)
+    public Iterable<Membre> membres(){
+        return membreRepository.findAll();
     }
 
-    @GetMapping(path = "/add")
+    @GetMapping(path = "/membre/add")
     public Membre addNewMembre(@RequestParam String nomMembre, @RequestParam String prenomMembre,
                                @RequestParam String mail, @RequestParam String login, @RequestParam String password){
         Membre membre = new Membre();
