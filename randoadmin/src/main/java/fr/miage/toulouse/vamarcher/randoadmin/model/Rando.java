@@ -1,7 +1,8 @@
-package fr.miage.toulouse.randouser.model;
+package fr.miage.toulouse.vamarcher.randoadmin.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -9,12 +10,12 @@ import java.util.List;
 
 @Document(collection = "rando")
 public class Rando {
-
     @Id
     private String id;
 
     private Date dateRetenue;
 
+    @DateTimeFormat(pattern="dd-MM-yyyy")
     private HashMap<Date, List<Vote>> propositionsDates;
 
     private String pointDepart;
@@ -45,6 +46,7 @@ public class Rando {
         this.id = id;
     }
 
+    @DateTimeFormat(pattern="dd-MM-yyyy")
     public Date getDateRetenue() {
         return dateRetenue;
     }
