@@ -19,19 +19,5 @@ public class RandoController {
         return randoRepository.findAll();
     }
 
-    @PostMapping(path = "/rando/add")
-    public Rando addNewRando(@RequestParam(required = false) Timestamp dateRetenue,@RequestParam(required = false) List<Timestamp> propositionsDates,@RequestParam(required = false) String pointDepart,@RequestParam(required = false) String description,
-                             @RequestParam(required = false) String distance,@RequestParam(required = false) String duree,@RequestParam(required = false) String denivele,@RequestParam(required = false) String niveau,@RequestParam(required = false) List<Integer> participants){
-        Rando rando = new Rando();
-        rando.setDateRetenue(dateRetenue);
-        rando.setPropositionsDates(propositionsDates);
-        rando.setPointDepart(pointDepart);
-        rando.setDescription(description);
-        rando.setDistance(distance);
-        rando.setDuree(duree);
-        rando.setDenivele(denivele);
-        rando.setNiveau(niveau);
-        rando.setParticipants(participants);
-        return randoRepository.save(rando);
-    }
+
 }
