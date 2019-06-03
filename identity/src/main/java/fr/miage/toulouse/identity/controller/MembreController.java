@@ -16,7 +16,7 @@ public class MembreController {
         return membreRepository.findAll();
     }
 
-    @GetMapping(path = "/membre/add")
+    @PostMapping(path = "/membre/add")
     public Membre addNewMembre(@RequestParam String nomMembre, @RequestParam String prenomMembre,
                                @RequestParam String mail, @RequestParam String login, @RequestParam String password){
         Membre membre = new Membre();
