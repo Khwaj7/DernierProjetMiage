@@ -140,4 +140,21 @@ public class RandoController {
         rando.setParticipants(participants);
         return rando;
     }
+
+    
+    /**
+     * Supprime une randonnée
+     * @param randoId String Id de la Rando
+     * @return status
+     */
+    @DeleteMapping(path = "/rando/annulerRando")
+    private String annulerRando(@RequestParam String randoId){
+        try{
+            Rando rando = randoRepository.findbyRandoId(randoId);
+            randoRepository.delete(rando);
+            return "Done";
+        } catch (Exception e){
+            return "NOK";
+        }
+    }
 }
