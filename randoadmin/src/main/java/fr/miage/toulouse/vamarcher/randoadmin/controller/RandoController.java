@@ -46,16 +46,18 @@ public class RandoController {
                              @RequestParam(required = false) String niveau, @RequestParam(required = false) float coutFixe,
                              @RequestParam(required = false) float coutVariable){
         Rando rando = new Rando();
-        HashMap<Date, List<Vote>> dates = new HashMap<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        HashMap<Long, List<Vote>> dates = new HashMap<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         for (String date: propositionsDates) {
-            Date ts = null;
+            Date tmp = null;
+            Timestamp ts = null;
             try {
-                ts = formatter.parse(date);
+                tmp = formatter.parse(date);
+                ts = new Timestamp(tmp.getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            dates.put(ts, new ArrayList<Vote>());
+            dates.put(ts.getTime(), new ArrayList<Vote>());
         }
         rando.setPropositionsDates(dates);
         rando.setPointDepart(pointDepart);
@@ -78,8 +80,8 @@ public class RandoController {
     @PostMapping(path = "/rando/clotureVote")
     public Rando clotureVote (@RequestParam String randoId){
         Rando rando = randoRepository.findbyRandoId(randoId);
-        HashMap<Date, List<Vote>> votes = rando.getPropositionsDates();
-        Date bestDate = getBestDate(votes);
+        HashMap<Long, List<Vote>> votes = rando.getPropositionsDates();
+        Timestamp bestDate = getBestDate(votes);
         rando.setDateRetenue(bestDate);
         rando = inscrireParticipants(rando);
         return randoRepository.save(rando);
@@ -109,15 +111,15 @@ public class RandoController {
     /**
      * Retourne la meilleure date selon les votes pour une rando
      * @param lesVotes La HashMap des votes d'une rando
-     * @return Date : La meilleure rando
+     * @return Timestamp : La meilleure rando
      */
-    private Date getBestDate(HashMap<Date, List<Vote>> lesVotes){
-        Date bestDate = new Date();
+    private Timestamp getBestDate(HashMap<Long, List<Vote>> lesVotes){
+        Timestamp bestDate = null;
         int count = 0;
-        for (Date key : lesVotes.keySet()){
+        for (Long key : lesVotes.keySet()){
             if (count < lesVotes.get(key).size()){
                 count = lesVotes.get(key).size();
-                bestDate = key;
+                bestDate = new Timestamp(key);
             }
         }
         return bestDate;
@@ -130,7 +132,7 @@ public class RandoController {
      */
     private Rando inscrireParticipants(Rando rando){
         List<Integer> participants = rando.getParticipants();
-        for (Vote vote : rando.getPropositionsDates().get(rando.getDateRetenue())){
+        for (Vote vote : rando.getPropositionsDates().get(rando.getDateRetenue().getTime())){
             if (!participants.contains(vote.getUserId())){
                 participants.add(vote.getUserId());
             }
