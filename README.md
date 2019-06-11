@@ -1,7 +1,17 @@
 # Dernier Projet Miage
 Le dernier projet de ces trois années de souffrance...
 
+# Lancement de Docker
 
+- Conteneur MySQL : 
+```powershell
+docker run -d --name mysql-vamarcher -p 3306:3306 -e MYSQL_ROOT_HOST=% -e MYSQL_ROOT_PASSWORD=azerty -e MYSQL_DATABASE=vamacherusers -e MYSQL_USER=VaMarcher_admin -e MYSQL_PASSWORD=azerty mysql
+```
+
+- Conteneur Mongodb : 
+```powershell
+docker run -d --name mongo-vamarcher -p 27017:27017 mongo
+```
 
 # Conception de l'application
 Diagrammes à réaliser : 
