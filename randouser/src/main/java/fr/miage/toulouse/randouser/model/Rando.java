@@ -3,19 +3,19 @@ package fr.miage.toulouse.randouser.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 @Document(collection = "rando")
 public class Rando {
-
     @Id
     private String id;
 
-    private Date dateRetenue;
+    private Timestamp dateRetenue;
 
-    private HashMap<Date, List<Vote>> propositionsDates;
+    private HashMap<Long, List<Vote>> propositionsDates;
 
     private String pointDepart;
 
@@ -45,19 +45,19 @@ public class Rando {
         this.id = id;
     }
 
-    public Date getDateRetenue() {
+    public Timestamp getDateRetenue() {
         return dateRetenue;
     }
 
-    public void setDateRetenue(Date dateRetenue) {
+    public void setDateRetenue(Timestamp dateRetenue) {
         this.dateRetenue = dateRetenue;
     }
 
-    public HashMap<Date, List<Vote>> getPropositionsDates() {
+    public HashMap<Long, List<Vote>> getPropositionsDates() {
         return propositionsDates;
     }
 
-    public void setPropositionsDates(HashMap<Date, List<Vote>> propositionsDates) {
+    public void setPropositionsDates(HashMap<Long, List<Vote>> propositionsDates) {
         this.propositionsDates = propositionsDates;
     }
 
@@ -145,7 +145,7 @@ public class Rando {
 
     }
 
-    public Rando(String id, Date dateRetenue, HashMap<Date, List<Vote>> propositionsDates, String pointDepart, String description,
+    public Rando(String id, Timestamp dateRetenue, HashMap<Long, List<Vote>> propositionsDates, String pointDepart, String description,
                  String distance, String duree, String denivele, String niveau, List<Integer> participants, float coutFixe, float coutVariable, String statut) {
         this.id = id;
         this.dateRetenue = dateRetenue;

@@ -1,6 +1,7 @@
 package fr.miage.toulouse.membersAdmin.web.controller;
 
 import fr.miage.toulouse.membersAdmin.dao.MembreDao;
+import fr.miage.toulouse.membersAdmin.dao.TeamLeaderDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,9 @@ import java.util.Optional;
 public class membersController {
     @Autowired
     private MembreDao membreDao;
+
+    @Autowired
+    private TeamLeaderDao teamLeaderDao;
 
     @RequestMapping(value="/membres", method = RequestMethod.GET)
     public Iterable<Membre> listeMembres(){
@@ -27,5 +31,17 @@ public class membersController {
     public int ajouterMembre(@RequestBody Membre membre){
         membreDao.save(membre);
         return membre.getId();
+    }
+
+    @PostMapping(value = "/membre/promote")
+    public String promote(@RequestParam Integer userID){
+        try{
+            Optional<Membre> membre = membreDao.findById(userID);
+            TeamLeader teamLeader = new TeamLeader(membre.get());
+            teamLeaderDao.save(teamLeader);
+            return "Promotion validée";
+        } catch (Exception e){
+            return "KO";
+        }
     }
 }

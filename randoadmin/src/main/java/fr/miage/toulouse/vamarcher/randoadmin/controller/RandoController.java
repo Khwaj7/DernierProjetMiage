@@ -52,9 +52,9 @@ public class RandoController {
             Date tmp = null;
             Timestamp ts = null;
             try {
-                tmp = formatter.parse(date);
+
                 ts = new Timestamp(tmp.getTime());
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             dates.put(ts.getTime(), new ArrayList<Vote>());
