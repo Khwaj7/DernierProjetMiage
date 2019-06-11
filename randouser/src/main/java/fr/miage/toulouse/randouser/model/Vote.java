@@ -12,9 +12,6 @@ public class Vote {
     @Id
     private String id;
 
-    @DBRef
-    private Rando rando;
-
     private Integer userId;
 
     private Date date;
@@ -25,14 +22,6 @@ public class Vote {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Rando getRando() {
-        return rando;
-    }
-
-    public void setRando(Rando rando) {
-        this.rando = rando;
     }
 
     public Integer getUserId() {
@@ -55,8 +44,7 @@ public class Vote {
 
     }
 
-    public Vote(Rando rando, Integer userId, Date date) {
-        this.rando = rando;
+    public Vote(Integer userId, Date date) {
         this.userId = userId;
         this.date = date;
     }

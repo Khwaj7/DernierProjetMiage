@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Document(collection = "vote")
@@ -13,13 +14,9 @@ public class Vote {
     @Id
     private String id;
 
-    @DBRef
-    private Rando rando;
-
     private Integer userId;
 
-    @DateTimeFormat(pattern="dd-MM-yyyy")
-    private Date date;
+    private Timestamp date;
 
     public String getId() {
         return id;
@@ -27,14 +24,6 @@ public class Vote {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Rando getRando() {
-        return rando;
-    }
-
-    public void setRando(Rando rando) {
-        this.rando = rando;
     }
 
     public Integer getUserId() {
@@ -49,7 +38,7 @@ public class Vote {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -57,8 +46,7 @@ public class Vote {
 
     }
 
-    public Vote(Rando rando, Integer userId, Date date) {
-        this.rando = rando;
+    public Vote(Integer userId, Timestamp date) {
         this.userId = userId;
         this.date = date;
     }
