@@ -24,7 +24,8 @@ public class membersController {
     }
 
     @PostMapping(value = "/membre")
-    public void ajouterMembre(@RequestBody Membre membre){
+    public int ajouterMembre(@RequestBody Membre membre){
         membreDao.save(membre);
+        return membre.getId();
     }
 }
