@@ -4,7 +4,6 @@ import fr.miage.toulouse.randouser.model.Rando;
 import fr.miage.toulouse.randouser.model.Vote;
 import fr.miage.toulouse.randouser.repo.RandoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -27,10 +26,11 @@ public class RandoController {
      * Ajoute un vote pour la date d'une randonnée
      * @param idRando
      * @param date
+     * @param userID
      * @return
      */
     @PostMapping(path="/rando/vote")
-    public String voterPour(@RequestParam String idRando, @RequestParam String date){
+    public String voterPour(@RequestParam String idRando, @RequestParam String date, @RequestParam Integer userID){
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
             if (rando.getStatut() != "Vote ouvert"){
@@ -39,8 +39,7 @@ public class RandoController {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             Date tmp = formatter.parse(date);
             Timestamp timestamp = new Timestamp(tmp.getTime());
-            //TODO trouver l'userID
-            Vote vote = new Vote(1, timestamp);
+            Vote vote = new Vote(userID, timestamp);
             List<Vote> votes = rando.getPropositionsDates().get(timestamp.getTime());
             votes.add(vote);
             rando.getPropositionsDates().replace(timestamp.getTime(), votes);
