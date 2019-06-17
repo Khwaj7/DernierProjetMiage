@@ -20,7 +20,7 @@ public class RandoController {
      * Retourne toute les randos
      * @return
      */
-    @RequestMapping(path = "/randos", method = RequestMethod.GET)
+    @RequestMapping(path = "/api/vamarcher/1.0/randos", method = RequestMethod.GET)
     public Iterable<Rando> getRandos(){
         return randoRepository.findAll();
     }
@@ -38,12 +38,12 @@ public class RandoController {
      * @param coutVariable
      * @return
      */
-    @PostMapping(path = "/rando/add")
-    public Rando addNewRando(@RequestParam(required = false) List<String> propositionsDates,@RequestParam(required = false) String pointDepart,
-                             @RequestParam(required = false) String description, @RequestParam(required = false) String distance,
-                             @RequestParam(required = false) String duree, @RequestParam(required = false) String denivele,
-                             @RequestParam(required = false) String niveau, @RequestParam(required = false) float coutFixe,
-                             @RequestParam(required = false) float coutVariable){
+    @PostMapping(path = "/api/vamarcher/1.0/rando/add")
+    public Rando addNewRando(@RequestParam List<String> propositionsDates,@RequestParam String pointDepart,
+                             @RequestParam String description, @RequestParam String distance,
+                             @RequestParam String duree, @RequestParam String denivele,
+                             @RequestParam String niveau, @RequestParam float coutFixe,
+                             @RequestParam float coutVariable){
         Rando rando = new Rando();
         HashMap<Long, List<Vote>> dates = new HashMap<>();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -76,7 +76,7 @@ public class RandoController {
      * @param randoId
      * @return
      */
-    @PostMapping(path = "/rando/clotureVote")
+    @PostMapping(path = "/api/vamarcher/1.0/rando/clotureVote")
     public Rando clotureVote (@RequestParam String randoId){
         Rando rando = randoRepository.findbyRandoId(randoId);
         HashMap<Long, List<Vote>> votes = rando.getPropositionsDates();
@@ -91,7 +91,7 @@ public class RandoController {
      * @param randoId
      * @return
      */
-    @PostMapping(path = "/rando/cloturerOrga")
+    @PostMapping(path = "/api/vamarcher/1.0/rando/cloturerOrga")
     public Rando clotuterOrga(@RequestParam String randoId){
         Rando rando = randoRepository.findbyRandoId(randoId);
         rando.setStatut("Cloturée");
@@ -146,7 +146,7 @@ public class RandoController {
      * @param randoId String Id de la Rando
      * @return status
      */
-    @DeleteMapping(path = "/rando/annulerRando")
+    @DeleteMapping(path = "/api/vamarcher/1.0/rando/annulerRando")
     private String annulerRando(@RequestParam String randoId){
         try{
             Rando rando = randoRepository.findbyRandoId(randoId);

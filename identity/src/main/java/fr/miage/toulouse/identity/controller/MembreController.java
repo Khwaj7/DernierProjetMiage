@@ -5,7 +5,6 @@ import fr.miage.toulouse.identity.repo.MembreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 public class MembreController {
@@ -18,7 +17,7 @@ public class MembreController {
         return membreRepository.findAll();
     }
 
-    @PostMapping(path = "/membre/add")
+    @PostMapping(path = "/api/vamarcher/1.0/membre/add")
     public Membre addNewMembre(@RequestParam String nomMembre, @RequestParam String prenomMembre,
                                @RequestParam String mail, @RequestParam String login, @RequestParam String password){
         Membre membre = new Membre();
@@ -30,7 +29,7 @@ public class MembreController {
         return membreRepository.save(membre);
     }
 
-    @PostMapping(path = "membre/login")
+    @PostMapping(path = "/api/vamarcher/1.0/membre/login")
     public Membre login(@RequestParam String login, @RequestParam String password){
         try{
             Membre membre = membreRepository.findByLogin(login);

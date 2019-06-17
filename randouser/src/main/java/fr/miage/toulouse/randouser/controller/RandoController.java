@@ -29,7 +29,7 @@ public class RandoController {
      * @param userID
      * @return
      */
-    @PostMapping(path="/rando/vote")
+    @PostMapping(path="/api/vamarcher/1.0/rando/vote")
     public String voterPour(@RequestParam String idRando, @RequestParam String date, @RequestParam Integer userID){
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
@@ -56,7 +56,7 @@ public class RandoController {
      * @param userID
      * @return String : status
      */
-    @PostMapping(path = "/rando/inscription")
+    @PostMapping(path = "/api/vamarcher/1.0/rando/inscription")
     public String inscription (@RequestParam String idRando, @RequestParam Integer userID){
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
@@ -74,7 +74,7 @@ public class RandoController {
      * @param userID
      * @return String : status
      */
-    @DeleteMapping(path = "rando/desinscription")
+    @DeleteMapping(path = "/api/vamarcher/1.0/rando/desinscription")
     public String desinscription(@RequestParam String idRando, @RequestParam Integer userID){
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
