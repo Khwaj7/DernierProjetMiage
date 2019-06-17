@@ -13,6 +13,65 @@ docker run -d --name mysql-vamarcher -p 3306:3306 -e MYSQL_ROOT_HOST=% -e MYSQL_
 docker run -d --name mongo-vamarcher -p 27017:27017 mongo
 ```
 
+# Documentation APIs
+## Micro-service : Identity
+- **POST**  ```:9080/api/vamarcher/1.0/membre/add``` : Membre
+  - nomMembre : String
+  - prenomMembre : String
+  - mail : String
+  - login : String
+  - password : String
+
+- **POST** ```:9080/api/vamarcher/1.0/membre/login``` : Membre | null
+  - login : String
+  - password : String
+  
+## Micro-service : MembersAdmin
+- **GET** ```:8080/api/vamarcher/1.0/membres``` : List\<Membre\>
+
+- **GET** ```:8080/api/vamarcher/1.0/membre``` : Membre
+  - id : String
+  
+- **POST** ```:8080/api/vamarcher/1.0/membre/promote``` : "Promotion validée" | "KO"
+  - userID : String
+  
+## Micro-service : RandoAdmin
+- **GET** ```:8090/api/vamarcher/1.0/randos``` : List\<Rando\>
+
+- **POST** ```:8090/api/vamarcher/1.0/rando/add``` : Rando
+  - propositionsDates : List\<String\>
+  - pointDepart : String
+  - description : String
+  - distance : String
+  - duree : String
+  - denivele : String
+  - niveau : String
+  - coutFixe : float
+  - coutVariable : float
+  
+- **POST** ```:8090/api/vamarcher/1.0/rando/clotureVote``` : Rando
+  - randoId : String
+  
+- **POST** ```:8090/api/vamarcher/1.0/rando/cloturerOrga``` : Rando
+  - randoID : String
+  
+- **DELETE** ```:8090/api/vamarcher/1.0/rando/annulerRando``` : "Done" | "NOK"
+  - randoId : String
+  
+## Micro-service : RandoUser
+- **POST** ```:8085/api/vamarcher/1.0/rando/vote``` : "vote OK" | "KO"
+  - idRando : String
+  - date : String
+  - userID : Integer
+  
+- **POST** ```:8085/api/vamarcher/1.0/rando/inscription``` : "Inscription validée" | "KO"
+  - idRando : String
+  - userID : Integer
+  
+- **DELETE** ```:8085/api/vamarcher/1.0/rando/desinscription``` : "Désinscription confirmée" | "KO"
+  - idRando : String
+  - userID : String
+
 # Conception de l'application
 Diagrammes à réaliser : 
 - Use case global à l'application
