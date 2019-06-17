@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import fr.miage.toulouse.membersAdmin.model.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,5 +44,11 @@ public class membersController {
         } catch (Exception e){
             return "KO";
         }
+    }
+
+    @PostMapping(value = "/stats/nombre")
+    public Integer mebres(){
+        List<Membre> membres = (List<Membre>) membreDao.findAll();
+        return membres.size();
     }
 }

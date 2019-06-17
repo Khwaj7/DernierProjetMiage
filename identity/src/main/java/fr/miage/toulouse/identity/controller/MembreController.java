@@ -5,6 +5,8 @@ import fr.miage.toulouse.identity.repo.MembreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class MembreController {
 
@@ -24,7 +26,19 @@ public class MembreController {
         membre.setPrenomMembre(prenomMembre);
         membre.setMailMembre(mail);
         membre.setLogin(login);
-        membre.setEncryptedPassword(password);
+        membre.hashPassword(password);
         return membreRepository.save(membre);
+    }
+
+    @PostMapping(path = "membre/login")
+    public Membre login(@RequestParam String login, @RequestParam String password){
+        try{
+            Membre membre = membreRepository.findByLogin(login);
+            boolean auth = Membre.checkPassword(password, membre.getEncryptedPassword());
+            if (auth) return membre;
+            else return null;
+        } catch (Exception e){
+            return null;
+        }
     }
 }

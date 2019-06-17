@@ -1,5 +1,7 @@
 package fr.miage.toulouse.identity.metier;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.persistence.*;
 
 @Entity
@@ -98,4 +100,31 @@ public class Membre {
         this.niveau = niveau;
         this.encryptedPassword = encryptedPassword;
     }
+
+    /**
+     * Hash le mot de passe pour le stocker en base de données
+     * @param password
+     * @return
+     */
+    public void hashPassword(String password){
+        String salt = BCrypt.gensalt(12);
+        String hashedPassword = BCrypt.hashpw(password, salt);
+        encryptedPassword = hashedPassword;
+    }
+
+    /**
+     * Compare une chaine de caractères avec le mot de passe stocké en base de données
+     * @param password
+     * @param encryptedPassword
+     * @return
+     */
+    public static boolean checkPassword(String password, String encryptedPassword){
+        boolean check = false;
+        if (null == encryptedPassword || !encryptedPassword.startsWith("$2a$")){
+            throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
+        }
+        check = BCrypt.checkpw(password, encryptedPassword);
+        return check;
+    }
+
 }
