@@ -1,5 +1,7 @@
 package fr.miage.toulouse.membersAdmin.model;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 
@@ -9,10 +11,19 @@ public class Membre {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private static ArrayList<Membre> lesMembres = new ArrayList<>();
-    private String nom, prenom, mail, username, password;
-    private int licence;
-    private double niveau;
+    private String nomMembre;
+
+    private String prenomMembre;
+
+    private String mailMembre;
+
+    private String login;
+
+    private String numLicence;
+
+    private String niveau;
+
+    private String encryptedPassword;
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
@@ -22,76 +33,68 @@ public class Membre {
     @PrimaryKeyJoinColumn
     private CertificatMedical certificatMedical;
 
-    public static Membre getMembreById(int idMembre){
-        return getLesMembres().get(idMembre);
-    }
-
-    public static ArrayList<Membre> getLesMembres() {
-        return lesMembres;
-    }
-
-    public static void setLesMembres(ArrayList<Membre> lesMembres) {
-        Membre.lesMembres = lesMembres;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public String getNom() {
-        return nom;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public String getNomMembre() {
+        return nomMembre;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public void setNomMembre(String nomMembre) {
+        this.nomMembre = nomMembre;
     }
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public String getPrenomMembre() {
+        return prenomMembre;
     }
 
-    public String getMail() {
-        return mail;
+    public void setPrenomMembre(String prenomMembre) {
+        this.prenomMembre = prenomMembre;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public String getMailMembre() {
+        return mailMembre;
     }
 
-    public String getUsername() {
-        return username;
+    public void setMailMembre(String mailMembre) {
+        this.mailMembre = mailMembre;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getLogin() {
+        return login;
     }
 
-    public String getPassword() {
-        return password;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getNumLicence() {
+        return numLicence;
     }
 
-    public int getLicence() {
-        return licence;
+    public void setNumLicence(String numLicence) {
+        this.numLicence = numLicence;
     }
 
-    public void setLicence(int licence) {
-        this.licence = licence;
-    }
-
-    public double getNiveau() {
+    public String getNiveau() {
         return niveau;
     }
 
-    public void setNiveau(double niveau) {
+    public void setNiveau(String niveau) {
         this.niveau = niveau;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public Adresse getAdresse() {
@@ -110,28 +113,54 @@ public class Membre {
         this.certificatMedical = certificatMedical;
     }
 
-    public Membre(String nom, String prenom, String mail, String username, String password, int licence, double niveau, Adresse adresse, CertificatMedical certificatMedical) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.mail = mail;
-        this.username = username;
-        this.password = password;
-        this.licence = licence;
+    public Membre() {
+    }
+
+    public Membre(String nomMembre, String prenomMembre, String mailMembre, String login, String encryptedPassword, String numLicence, String niveau, Adresse adresse, CertificatMedical certificatMedical) {
+        this.nomMembre = nomMembre;
+        this.prenomMembre = prenomMembre;
+        this.mailMembre = mailMembre;
+        this.login = login;
+        this.numLicence = numLicence;
         this.niveau = niveau;
+        this.encryptedPassword = encryptedPassword;
         this.adresse = adresse;
         this.certificatMedical = certificatMedical;
     }
 
-    public Membre(String nom, String prenom, String mail, String username, String password, int licence, double niveau) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.mail = mail;
-        this.username = username;
-        this.password = password;
-        this.licence = licence;
+    public Membre(String nomMembre, String prenomMembre, String mailMembre, String login, String encryptedPassword, String numLicence, String niveau) {
+        this.nomMembre = nomMembre;
+        this.prenomMembre = prenomMembre;
+        this.mailMembre = mailMembre;
+        this.login = login;
+        this.numLicence = numLicence;
         this.niveau = niveau;
+        this.encryptedPassword = encryptedPassword;
     }
 
-    public Membre() {
+    /**
+     * Hash le mot de passe pour le stocker en base de données
+     * @param password
+     * @return
+     */
+    public void hashPassword(String password){
+        String salt = BCrypt.gensalt(12);
+        String hashedPassword = BCrypt.hashpw(password, salt);
+        encryptedPassword = hashedPassword;
+    }
+
+    /**
+     * Compare une chaine de caractères avec le mot de passe stocké en base de données
+     * @param password
+     * @param encryptedPassword
+     * @return
+     */
+    public static boolean checkPassword(String password, String encryptedPassword){
+        boolean check = false;
+        if (null == encryptedPassword || !encryptedPassword.startsWith("$2a$")){
+            throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
+        }
+        check = BCrypt.checkpw(password, encryptedPassword);
+        return check;
     }
 }

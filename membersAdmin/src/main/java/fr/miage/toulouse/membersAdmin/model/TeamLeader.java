@@ -11,6 +11,6 @@ public class TeamLeader extends Membre {
     }
 
     public TeamLeader(Membre membre){
-        super(membre.getNom(), membre.getPrenom(), membre.getMail(), membre.getUsername(), membre.getPassword(), membre.getLicence(), membre.getNiveau(), membre.getAdresse(), membre.getCertificatMedical());
+        super(membre.getNomMembre(), membre.getPrenomMembre(), membre.getMailMembre(), membre.getLogin(), membre.getEncryptedPassword(), membre.getNumLicence(), membre.getNiveau(), membre.getAdresse(), membre.getCertificatMedical());
     }
 }

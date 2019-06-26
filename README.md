@@ -15,25 +15,33 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
 
 # Documentation APIs
 ## Micro-service : Identity
-- **POST**  ```:9080/api/vamarcher/1.0/membre/add``` : Membre
-  - nomMembre : String
-  - prenomMembre : String
-  - mail : String
-  - login : String
-  - password : String
 
-- **POST** ```:9080/api/vamarcher/1.0/membre/login``` : Membre | null
-  - login : String
-  - password : String
+
+
   
 ## Micro-service : MembersAdmin
 - **GET** ```:8080/api/vamarcher/1.0/membres``` : List\<Membre\>
 
 - **GET** ```:8080/api/vamarcher/1.0/membre``` : Membre
   - id : String
+
+- **POST**  ```:8080/api/vamarcher/1.0/membre/add``` : Membre
+  - nomMembre : String
+  - prenomMembre : String
+  - mail : String
+  - login : String
+  - password : String
+  - numero : int
+  - rue : String
+  - ville : String
+  - pays : String
   
 - **POST** ```:8080/api/vamarcher/1.0/membre/promote``` : "Promotion validée" | "KO"
   - userID : String
+
+- **POST** ```:8080/api/vamarcher/1.0/membre/login``` : Membre | null
+  - login : String
+  - password : String
   
 ## Micro-service : RandoAdmin
 - **GET** ```:8090/api/vamarcher/1.0/randos``` : List\<Rando\>

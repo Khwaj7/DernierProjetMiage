@@ -1,7 +1,7 @@
 package fr.miage.toulouse.membersAdmin.web.controller;
 
-import fr.miage.toulouse.membersAdmin.dao.MembreDao;
-import fr.miage.toulouse.membersAdmin.dao.TeamLeaderDao;
+import fr.miage.toulouse.membersAdmin.services.AdminService;
+import fr.miage.toulouse.membersAdmin.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,42 +13,55 @@ import java.util.Optional;
 @RestController
 public class membersController {
     @Autowired
-    private MembreDao membreDao;
+    private UserService userService;
 
     @Autowired
-    private TeamLeaderDao teamLeaderDao;
+    private AdminService adminService;
 
-    @RequestMapping(value="/membres", method = RequestMethod.GET)
+    @RequestMapping(value="/api/vamarcher/1.0/membres", method = RequestMethod.GET)
     public Iterable<Membre> listeMembres(){
-        return membreDao.findAll();
+        return adminService.listerMembres();
     }
 
-    @RequestMapping(value = "/membre/{id}", method = RequestMethod.GET)
-    public Optional<Membre> getMembre(@PathVariable int id){
-        return membreDao.findById(id);
+    @RequestMapping(value = "/api/vamarcher/1.0/membre/{id}", method = RequestMethod.GET)
+    public Membre getMembre(@PathVariable int id){
+        return userService.getOneMembre(id);
     }
 
-    @PostMapping(value = "/membre")
-    public int ajouterMembre(@RequestBody Membre membre){
-        membreDao.save(membre);
-        return membre.getId();
+    @PostMapping(value = "/api/vamarcher/1.0/membre/add")
+    public Membre ajouterMembre(@RequestParam String nomMembre, @RequestParam String prenomMembre,
+                             @RequestParam String mail, @RequestParam String login, @RequestParam String password,
+                                @RequestParam int numero, @RequestParam String rue, @RequestParam String ville,
+                                @RequestParam String pays){
+        Membre membre = new Membre();
+        Adresse adresse = new Adresse();
+        membre.setNomMembre(nomMembre);
+        membre.setPrenomMembre(prenomMembre);
+        membre.setMailMembre(mail);
+        membre.setLogin(login);
+        membre.hashPassword(password);
+
+        adresse.setNumero(numero);
+        adresse.setRue(rue);
+        adresse.setVille(ville);
+        adresse.setPays(pays);
+
+        membre.setAdresse(adresse);
+        return userService.inscription(membre);
     }
 
-    @PostMapping(value = "/membre/promote")
+    @PostMapping(value = "/api/vamarcher/1.0/membre/promote")
     public String promote(@RequestParam Integer userID){
-        try{
-            Optional<Membre> membre = membreDao.findById(userID);
-            TeamLeader teamLeader = new TeamLeader(membre.get());
-            teamLeaderDao.save(teamLeader);
-            return "Promotion validée";
-        } catch (Exception e){
-            return "KO";
-        }
+       return adminService.promoteTeamLeader(userID);
     }
 
-    @PostMapping(value = "/stats/nombre")
-    public Integer mebres(){
-        List<Membre> membres = (List<Membre>) membreDao.findAll();
-        return membres.size();
+    @PostMapping(value = "/api/vamarcher/1.0/stats/nombre")
+    public Integer membres(){
+        return adminService.stats();
+    }
+
+    @PostMapping(path = "/api/vamarcher/1.0/membre/login")
+    public Membre login(@RequestParam String login, @RequestParam String password){
+        return userService.login(login, password);
     }
 }
