@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import fr.miage.toulouse.membersAdmin.model.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 public class membersController {
     @Autowired

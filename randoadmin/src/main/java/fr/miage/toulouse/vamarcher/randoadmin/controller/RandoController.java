@@ -3,6 +3,8 @@ package fr.miage.toulouse.vamarcher.randoadmin.controller;
 import fr.miage.toulouse.vamarcher.randoadmin.model.Rando;
 import fr.miage.toulouse.vamarcher.randoadmin.model.Vote;
 import fr.miage.toulouse.vamarcher.randoadmin.repo.RandoRepository;
+import fr.miage.toulouse.vamarcher.randoadmin.service.MembreService;
+import fr.miage.toulouse.vamarcher.randoadmin.service.TeamLeaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,10 @@ import java.util.*;
 public class RandoController {
 
     @Autowired
-    private RandoRepository randoRepository;
+    private TeamLeaderService teamLeaderService;
+
+    @Autowired
+    private MembreService membreService;
 
     /**
      * Retourne toute les randos
@@ -22,7 +27,7 @@ public class RandoController {
      */
     @RequestMapping(path = "/api/vamarcher/1.0/randos", method = RequestMethod.GET)
     public Iterable<Rando> getRandos(){
-        return randoRepository.findAll();
+        return membreService.listerRandos();
     }
 
     /**
@@ -68,7 +73,7 @@ public class RandoController {
         rando.setCoutFixe(coutFixe);
         rando.setCoutVariable(coutVariable);
         rando.setStatut("Vote ouvert");
-        return randoRepository.save(rando);
+        return teamLeaderService.proposerRando(rando);
     }
 
     /**
@@ -78,12 +83,7 @@ public class RandoController {
      */
     @PostMapping(path = "/api/vamarcher/1.0/rando/clotureVote")
     public Rando clotureVote (@RequestParam String randoId){
-        Rando rando = randoRepository.findbyRandoId(randoId);
-        HashMap<Long, List<Vote>> votes = rando.getPropositionsDates();
-        Timestamp bestDate = getBestDate(votes);
-        rando.setDateRetenue(bestDate);
-        rando = inscrireParticipants(rando);
-        return randoRepository.save(rando);
+        return teamLeaderService.cloturerVote(randoId);
     }
 
     /**
@@ -93,53 +93,8 @@ public class RandoController {
      */
     @PostMapping(path = "/api/vamarcher/1.0/rando/cloturerOrga")
     public Rando clotuterOrga(@RequestParam String randoId){
-        Rando rando = randoRepository.findbyRandoId(randoId);
-        rando.setStatut("Cloturée");
-        return randoRepository.save(rando);
+        return teamLeaderService.cloturerOrga(randoId);
     }
-
-
-    //TODO A dégager juste pour test
-    @DeleteMapping(path = "/randos/deleteAll")
-    public String deleteAllRandos (){
-        randoRepository.deleteAll();
-        return "OK";
-    }
-
-
-    /**
-     * Retourne la meilleure date selon les votes pour une rando
-     * @param lesVotes La HashMap des votes d'une rando
-     * @return Timestamp : La meilleure rando
-     */
-    private Timestamp getBestDate(HashMap<Long, List<Vote>> lesVotes){
-        Timestamp bestDate = null;
-        int count = 0;
-        for (Long key : lesVotes.keySet()){
-            if (count < lesVotes.get(key).size()){
-                count = lesVotes.get(key).size();
-                bestDate = new Timestamp(key);
-            }
-        }
-        return bestDate;
-    }
-
-    /**
-     * Inscrit d'office les participants qui ont voté pour la date retenue
-     * @param rando Rando a modifier
-     * @return Rando mise à jour
-     */
-    private Rando inscrireParticipants(Rando rando){
-        List<Integer> participants = rando.getParticipants();
-        for (Vote vote : rando.getPropositionsDates().get(rando.getDateRetenue().getTime())){
-            if (!participants.contains(vote.getUserId())){
-                participants.add(vote.getUserId());
-            }
-        }
-        rando.setParticipants(participants);
-        return rando;
-    }
-
     
     /**
      * Supprime une randonnée
@@ -148,12 +103,40 @@ public class RandoController {
      */
     @DeleteMapping(path = "/api/vamarcher/1.0/rando/annulerRando")
     private String annulerRando(@RequestParam String randoId){
-        try{
-            Rando rando = randoRepository.findbyRandoId(randoId);
-            randoRepository.delete(rando);
-            return "Done";
-        } catch (Exception e){
-            return "NOK";
-        }
+        return teamLeaderService.annulerRando(randoId);
+    }
+
+    /**
+     * Ajoute un vote pour la date d'une randonnée
+     * @param idRando
+     * @param date
+     * @param userID
+     * @return
+     */
+    @PostMapping(path="/api/vamarcher/1.0/rando/vote")
+    public String voterPour(@RequestParam String idRando, @RequestParam String date, @RequestParam Integer userID){
+        return membreService.voter(idRando, date, userID);
+    }
+
+    /**
+     * Inscrption d'un randonneur à une randonnée.
+     * @param idRando
+     * @param userID
+     * @return String : status
+     */
+    @PostMapping(path = "/api/vamarcher/1.0/rando/inscription")
+    public String inscription (@RequestParam String idRando, @RequestParam Integer userID){
+        return membreService.inscrire(idRando, userID);
+    }
+
+    /**
+     *
+     * @param idRando
+     * @param userID
+     * @return String : status
+     */
+    @DeleteMapping(path = "/api/vamarcher/1.0/rando/desinscription")
+    public String desinscription(@RequestParam String idRando, @RequestParam Integer userID){
+        return membreService.desinscrire(idRando, userID);
     }
 }

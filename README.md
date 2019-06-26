@@ -14,10 +14,6 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
 ```
 
 # Documentation APIs
-## Micro-service : Identity
-
-
-
   
 ## Micro-service : MembersAdmin
 - **GET** ```:8080/api/vamarcher/1.0/membres``` : List\<Membre\>
@@ -65,18 +61,17 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
   
 - **DELETE** ```:8090/api/vamarcher/1.0/rando/annulerRando``` : "Done" | "NOK"
   - randoId : String
-  
-## Micro-service : RandoUser
-- **POST** ```:8085/api/vamarcher/1.0/rando/vote``` : "vote OK" | "KO"
+
+- **POST** ```:8090/api/vamarcher/1.0/rando/vote``` : "vote OK" | "KO"
   - idRando : String
   - date : String
   - userID : Integer
   
-- **POST** ```:8085/api/vamarcher/1.0/rando/inscription``` : "Inscription validée" | "KO"
+- **POST** ```:8090/api/vamarcher/1.0/rando/inscription``` : "Inscription validée" | "KO"
   - idRando : String
   - userID : Integer
   
-- **DELETE** ```:8085/api/vamarcher/1.0/rando/desinscription``` : "Désinscription confirmée" | "KO"
+- **DELETE** ```:8090/api/vamarcher/1.0/rando/desinscription``` : "Désinscription confirmée" | "KO"
   - idRando : String
   - userID : String
 

@@ -1,36 +1,27 @@
-package fr.miage.toulouse.randouser.controller;
+package fr.miage.toulouse.vamarcher.randoadmin.service;
 
-import fr.miage.toulouse.randouser.model.Rando;
-import fr.miage.toulouse.randouser.model.Vote;
-import fr.miage.toulouse.randouser.repo.RandoRepository;
+import fr.miage.toulouse.vamarcher.randoadmin.model.Rando;
+import fr.miage.toulouse.vamarcher.randoadmin.model.Vote;
+import fr.miage.toulouse.vamarcher.randoadmin.repo.RandoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@RestController
-public class RandoController {
+public class MembreServiceImpl implements MembreService {
 
     @Autowired
-    private RandoRepository randoRepository;
+    RandoRepository randoRepository;
 
-    @RequestMapping(path = "/randos", method = RequestMethod.GET)
-    public Iterable<Rando> getRandos(){
+    @Override
+    public Iterable<Rando> listerRandos() {
         return randoRepository.findAll();
     }
 
-    /**
-     * Ajoute un vote pour la date d'une randonnée
-     * @param idRando
-     * @param date
-     * @param userID
-     * @return
-     */
-    @PostMapping(path="/api/vamarcher/1.0/rando/vote")
-    public String voterPour(@RequestParam String idRando, @RequestParam String date, @RequestParam Integer userID){
+    @Override
+    public String voter(String idRando, String date, Integer userID) {
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
             if (rando.getStatut() != "Vote ouvert"){
@@ -50,17 +41,11 @@ public class RandoController {
         }
     }
 
-    /**
-     * Inscrption d'un randonneur à une randonnée.
-     * @param idRando
-     * @param userID
-     * @return String : status
-     */
-    @PostMapping(path = "/api/vamarcher/1.0/rando/inscription")
-    public String inscription (@RequestParam String idRando, @RequestParam Integer userID){
+    @Override
+    public String inscrire(String idRando, Integer userId) {
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
-            rando.getParticipants().add(userID);
+            rando.getParticipants().add(userId);
             randoRepository.save(rando);
             return "Inscription validée";
         } catch (Exception e){
@@ -68,14 +53,8 @@ public class RandoController {
         }
     }
 
-    /**
-     *
-     * @param idRando
-     * @param userID
-     * @return String : status
-     */
-    @DeleteMapping(path = "/api/vamarcher/1.0/rando/desinscription")
-    public String desinscription(@RequestParam String idRando, @RequestParam Integer userID){
+    @Override
+    public String desinscrire(String idRando, Integer userID) {
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
             if (!rando.getParticipants().contains(userID)){
