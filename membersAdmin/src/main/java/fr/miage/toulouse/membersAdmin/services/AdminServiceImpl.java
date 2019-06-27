@@ -5,10 +5,12 @@ import fr.miage.toulouse.membersAdmin.dao.TeamLeaderDao;
 import fr.miage.toulouse.membersAdmin.model.Membre;
 import fr.miage.toulouse.membersAdmin.model.TeamLeader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AdminServiceImpl implements AdminService {
 
     @Autowired

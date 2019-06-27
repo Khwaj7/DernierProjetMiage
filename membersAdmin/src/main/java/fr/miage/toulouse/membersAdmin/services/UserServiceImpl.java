@@ -3,9 +3,11 @@ package fr.miage.toulouse.membersAdmin.services;
 import fr.miage.toulouse.membersAdmin.dao.MembreDao;
 import fr.miage.toulouse.membersAdmin.model.Membre;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
