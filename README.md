@@ -18,6 +18,8 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
 ## Micro-service : MembersAdmin
 - **GET** ```:8080/api/vamarcher/1.0/membres``` : List\<Membre\>
 
+- **GET** ```:8080/api/vamarcher/1.0/teamleaders``` : List\<TeamLeader\>
+
 - **GET** ```:8080/api/vamarcher/1.0/membre``` : Membre
   - id : String
 
