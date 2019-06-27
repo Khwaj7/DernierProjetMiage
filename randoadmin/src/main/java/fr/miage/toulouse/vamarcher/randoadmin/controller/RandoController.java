@@ -73,6 +73,7 @@ public class RandoController {
         rando.setCoutFixe(coutFixe);
         rando.setCoutVariable(coutVariable);
         rando.setStatut("Vote ouvert");
+
         return teamLeaderService.proposerRando(rando);
     }
 

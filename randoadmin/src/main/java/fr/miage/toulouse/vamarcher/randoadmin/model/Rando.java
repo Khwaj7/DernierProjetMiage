@@ -2,6 +2,7 @@ package fr.miage.toulouse.vamarcher.randoadmin.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class Rando {
     @Id
     private String id;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Timestamp dateRetenue;
 
     private HashMap<Long, List<Vote>> propositionsDates;
