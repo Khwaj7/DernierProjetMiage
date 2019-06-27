@@ -32,6 +32,23 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
   - ville : String
   - pays : String
   
+  - **Retour** : 
+    - nomMembre : String
+    - prenomMembre : String
+    - mailMembre : String
+    - login : String
+    - numLicence : int
+    - niveau : int
+    - encryptedPassword : hashcode (String)
+    - adresse : Object : 
+      - numero : int
+      - rue : String
+      - ville : String
+      - pays : String
+    - certificatMedical : String
+  
+  
+  
 - **POST** ```:8080/api/vamarcher/1.0/membre/promote``` : "Promotion validée" | "KO"
   - userID : String
 
