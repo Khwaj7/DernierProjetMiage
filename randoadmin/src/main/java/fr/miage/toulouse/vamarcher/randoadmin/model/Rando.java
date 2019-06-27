@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Rando {
     private String id;
 
     @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
-    private Timestamp dateRetenue;
+    private Date dateRetenue;
 
     private HashMap<Long, List<Vote>> propositionsDates;
 
@@ -46,11 +47,11 @@ public class Rando {
         this.id = id;
     }
 
-    public Timestamp getDateRetenue() {
+    public Date getDateRetenue() {
         return dateRetenue;
     }
 
-    public void setDateRetenue(Timestamp dateRetenue) {
+    public void setDateRetenue(Date dateRetenue) {
         this.dateRetenue = dateRetenue;
     }
 

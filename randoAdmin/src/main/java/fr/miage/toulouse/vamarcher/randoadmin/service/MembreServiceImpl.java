@@ -26,19 +26,22 @@ public class MembreServiceImpl implements MembreService {
     public String voter(String idRando, String date, Integer userID) {
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
-            if (rando.getStatut() != "Vote ouvert"){
+            if (!rando.getStatut().equals("Vote ouvert")){
                 throw  new Exception("Le vote n'est pas disponible pour cette randonnée");
             }
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             Date tmp = formatter.parse(date);
             Timestamp timestamp = new Timestamp(tmp.getTime());
-            Vote vote = new Vote(userID, timestamp);
+            Vote vote = new Vote();
+            vote.setDate(tmp);
+            vote.setUserId(userID);
             List<Vote> votes = rando.getPropositionsDates().get(timestamp.getTime());
             votes.add(vote);
             rando.getPropositionsDates().replace(timestamp.getTime(), votes);
             randoRepository.save(rando);
             return "vote OK";
         } catch (Exception e){
+            e.printStackTrace();
             return "KO";
         }
     }

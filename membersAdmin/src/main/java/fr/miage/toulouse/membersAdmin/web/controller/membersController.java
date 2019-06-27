@@ -40,8 +40,10 @@ public class membersController {
     }
 
     @PostMapping(value = "/api/vamarcher/1.0/membre/promote")
-    public String promote(@RequestParam Integer userID){
-       return adminService.promoteTeamLeader(userID);
+    public String promote(@RequestBody String string){
+       JSONObject jsonObject = new JSONObject(string);
+       Integer userID = jsonObject.getInt("userID");
+        return adminService.promoteTeamLeader(userID);
     }
 
     @PostMapping(value = "/api/vamarcher/1.0/stats/nombre")

@@ -2,6 +2,7 @@ package fr.miage.toulouse.vamarcher.randoadmin.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,7 +15,8 @@ public class Vote {
 
     private Integer userId;
 
-    private Timestamp date;
+    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    private Date date;
 
     public String getId() {
         return id;
@@ -36,7 +38,7 @@ public class Vote {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -44,7 +46,7 @@ public class Vote {
 
     }
 
-    public Vote(Integer userId, Timestamp date) {
+    public Vote(Integer userId, Date date) {
         this.userId = userId;
         this.date = date;
     }
