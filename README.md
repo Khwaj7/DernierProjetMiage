@@ -23,12 +23,12 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
 - **GET** ```:8080/api/vamarcher/1.0/membre``` : Membre
   - id : String
 
-- **POST**  ```:8080/api/vamarcher/1.0/membre/add``` : Membre
+- **POST** (JSON Body)  ```:8080/api/vamarcher/1.0/membre/add``` : Membre
   - nomMembre : String
   - prenomMembre : String
-  - mail : String
+  - mailMembre : String
   - login : String
-  - password : String
+  - encryptedPassword : String
   - numero : int
   - rue : String
   - ville : String
@@ -49,9 +49,8 @@ docker run -d --name mongo-vamarcher -p 27017:27017 mongo
       - pays : String
     - certificatMedical : String
   
-  
-  
-- **POST** ```:8080/api/vamarcher/1.0/membre/promote``` : "Promotion validée" | "KO"
+   
+- **POST** (JSON Body) ```:8080/api/vamarcher/1.0/membre/promote``` : "Promotion validée" | "KO"
   - userID : String
 
 - **POST** ```:8080/api/vamarcher/1.0/membre/login``` : Membre | null
