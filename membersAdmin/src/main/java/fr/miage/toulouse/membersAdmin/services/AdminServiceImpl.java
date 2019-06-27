@@ -41,4 +41,9 @@ public class AdminServiceImpl implements AdminService {
         List<Membre> membres = (List<Membre>) membreDao.findAll();
         return membres.size();
     }
+
+    @Override
+    public Iterable<TeamLeader> listeTeamLeaders() {
+        return teamLeaderDao.findAll();
+    }
 }

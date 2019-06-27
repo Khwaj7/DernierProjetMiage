@@ -1,6 +1,7 @@
 package fr.miage.toulouse.membersAdmin.services;
 
 import fr.miage.toulouse.membersAdmin.model.Membre;
+import fr.miage.toulouse.membersAdmin.model.TeamLeader;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,5 +25,11 @@ public interface AdminService {
      * @return
      */
     Integer stats();
+
+    /**
+     * Retourne la liste des TeamLeader
+     * @return
+     */
+    Iterable<TeamLeader> listeTeamLeaders();
 
 }

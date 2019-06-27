@@ -1,7 +1,9 @@
 package fr.miage.toulouse.membersAdmin.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.miage.toulouse.membersAdmin.services.AdminService;
 import fr.miage.toulouse.membersAdmin.services.UserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,25 +27,15 @@ public class membersController {
         return userService.getOneMembre(id);
     }
 
+    @GetMapping(value = "/api/vamarcher/1.0/teamleaders")
+    public Iterable<TeamLeader> listeTeamLeader(){
+        return adminService.listeTeamLeaders();
+    }
+
     @PostMapping(value = "/api/vamarcher/1.0/membre/add")
-    public Membre ajouterMembre(@RequestParam String nomMembre, @RequestParam String prenomMembre,
-                             @RequestParam String mail, @RequestParam String login, @RequestParam String password,
-                                @RequestParam int numero, @RequestParam String rue, @RequestParam String ville,
-                                @RequestParam String pays){
-        Membre membre = new Membre();
-        Adresse adresse = new Adresse();
-        membre.setNomMembre(nomMembre);
-        membre.setPrenomMembre(prenomMembre);
-        membre.setMailMembre(mail);
-        membre.setLogin(login);
-        membre.hashPassword(password);
-
-        adresse.setNumero(numero);
-        adresse.setRue(rue);
-        adresse.setVille(ville);
-        adresse.setPays(pays);
-
-        membre.setAdresse(adresse);
+    public Membre ajouterMembre(@RequestBody Membre membre){
+        Membre lemembre = membre;
+        lemembre.hashPassword(membre.getEncryptedPassword());
         return userService.inscription(membre);
     }
 
