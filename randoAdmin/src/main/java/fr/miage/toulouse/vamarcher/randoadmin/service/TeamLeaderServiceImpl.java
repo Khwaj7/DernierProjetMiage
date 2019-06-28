@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class TeamLeaderServiceImpl implements TeamLeaderService {
         Timestamp bestDate = getBestDate(votes);
         rando.setDateRetenue(bestDate);
         rando = inscrireParticipants(rando);
+        rando.setStatut("Vote terminé");
         return randoRepository.save(rando);
     }
 
@@ -72,6 +74,9 @@ public class TeamLeaderServiceImpl implements TeamLeaderService {
      * @return Rando mise à jour
      */
     private Rando inscrireParticipants(Rando rando){
+        if (rando.getParticipants() == null){
+            rando.setParticipants(new ArrayList<>());
+        }
         List<Integer> participants = rando.getParticipants();
         for (Vote vote : rando.getPropositionsDates().get(rando.getDateRetenue().getTime())){
             if (!participants.contains(vote.getUserId())){

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,13 +37,16 @@ public class MembreServiceImpl implements MembreService {
             vote.setDate(tmp);
             vote.setUserId(userID);
             List<Vote> votes = rando.getPropositionsDates().get(timestamp.getTime());
+            if (votes.contains(vote)){
+                throw new Exception("Vous avez déjà voté pour cette date");
+            }
             votes.add(vote);
             rando.getPropositionsDates().replace(timestamp.getTime(), votes);
             randoRepository.save(rando);
             return "vote OK";
         } catch (Exception e){
             e.printStackTrace();
-            return "KO";
+            return e.getMessage();
         }
     }
 
@@ -50,11 +54,21 @@ public class MembreServiceImpl implements MembreService {
     public String inscrire(String idRando, Integer userId) {
         try{
             Rando rando = randoRepository.findbyRandoId(idRando);
+            if (rando.getStatut().equals("Cloturée")){
+                throw new Exception("Inscription impossible : l'organisation est cloturée");
+            }
+            if (rando.getParticipants() == null){
+                rando.setParticipants(new ArrayList<Integer>());
+            }
+            if (rando.getParticipants().contains(userId)){
+                throw new Exception("L'utilisateur est déjà inscrit");
+            }
             rando.getParticipants().add(userId);
             randoRepository.save(rando);
             return "Inscription validée";
         } catch (Exception e){
-            return "KO";
+            e.printStackTrace();
+            return e.getMessage();
         }
     }
 
@@ -69,7 +83,7 @@ public class MembreServiceImpl implements MembreService {
             rando.getParticipants().remove(index);
             return "Désinscription confirmée";
         }catch (Exception e){
-            return "KO";
+            return e.getMessage();
         }
     }
 }
