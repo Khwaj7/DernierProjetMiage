@@ -1,5 +1,5 @@
 # Dernier Projet Miage
-Le dernier projet de ces trois années de souffrance...
+Le dernier projet de ces trois années de MIAGE !
 
 # Lancement de Docker
 
